@@ -1,0 +1,5 @@
+google-auth==2.0.0
+google-auth-oauthlib==0.4.1
+google-auth-httplib2==0.0.4
+googleapiclient==1.23.0
+spotipy==2.15.0
