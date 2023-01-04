@@ -1,5 +1,34 @@
+
+The required packages to run this project:
 google-auth==2.0.0
 google-auth-oauthlib==0.4.1
 google-auth-httplib2==0.0.4
 googleapiclient==1.23.0
 spotipy==2.15.0
+
+
+
+Here are the steps to create the requirements.txt file:
+
+1) Make sure you have installed the required Python packages. You can do this by running the following command:
+
+pip install google-auth google-auth-oauthlib google-auth-httplib2 googleapiclient spotipy
+
+2) Step two of the process to create a requirements.txt file involves navigating to the directory where you want to create the file.
+
+To navigate to a directory, you can use the cd (change directory) command in a terminal or command prompt.
+
+For example, if you want to navigate to the /path/to/directory directory, you can use the following command:
+
+cd /path/to/directory
+
+You can also use the cd command to navigate to a directory relative to the current directory. For example, to navigate to the subdirectory directory within the current directory, you can use the following command:
+
+cd subdirectory
+You can use the ls (list) command to list the contents of the current directory and verify that you are in the correct location.
+
+3) Run the following command:
+
+pip freeze > requirements.txt
+
+This will create a requirements.txt file that lists all of the packages that are installed in your environment, along with their version numbers.
