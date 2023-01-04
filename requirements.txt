@@ -14,7 +14,7 @@ Here are the steps to create the requirements.txt file:
 
 pip install google-auth google-auth-oauthlib google-auth-httplib2 googleapiclient spotipy
 
-2) Step two of the process to create a requirements.txt file involves navigating to the directory where you want to create the file.
+2) Navigate to the directory where you want to create the file.
 
 To navigate to a directory, you can use the cd (change directory) command in a terminal or command prompt.
 
