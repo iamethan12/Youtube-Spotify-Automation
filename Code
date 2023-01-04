@@ -1,0 +1,78 @@
+import os
+import google.auth
+import googleapiclient.discovery
+import googleapiclient.errors
+import spotipy
+import spotipy.util as util
+
+# Set up the Spotify API client
+spotify_client_id = os.environ['SPOTIFY_CLIENT_ID']
+spotify_client_secret = os.environ['SPOTIFY_CLIENT_SECRET']
+spotify_redirect_uri = os.environ['SPOTIFY_REDIRECT_URI']
+
+# Prompt the user to log in to Spotify
+username = input('Enter your Spotify username: ')
+scope = 'playlist-modify-public'
+token = util.prompt_for_user_token(username, scope, client_id=spotify_client_id,
+                                   client_secret=spotify_client_secret, redirect_uri=spotify_redirect_uri)
+
+# Create the Spotify API client
+spotify = spotipy.Spotify(auth=token)
+
+# Set up the YouTube API client
+youtube_api_key = os.environ['YOUTUBE_API_KEY']
+
+# Set up the YouTube API service
+youtube = googleapiclient.discovery.build('youtube', 'v3', developerKey=youtube_api_key)
+
+# Search for a playlist on YouTube
+query = input('Enter the name of the YouTube playlist: ')
+
+request = youtube.search().list(
+    part='id',
+    type='playlist',
+    q=query,
+    maxResults=1
+)
+
+response = request.execute()
+
+# Extract the playlist ID from the search results
+playlist_id = response['items'][0]['id']['playlistId']
+
+# Get the playlist items from the YouTube playlist
+request = youtube.playlistItems().list(
+    part='snippet',
+    playlistId=playlist_id
+)
+
+response = request.execute()
+
+# Extract the song titles and artists from the playlist items
+songs = []
+for item in response['items']:
+    song_title = item['snippet']['title']
+    artist = item['snippet']['channelTitle']
+    songs.append((song_title, artist))
+
+# Create a new playlist on Spotify
+playlist_name = input('Enter a name for the Spotify playlist: ')
+playlist_description = input('Enter a description for the Spotify playlist: ')
+
+playlist = spotify.user_playlist_create(username, playlist_name, description=playlist_description)
+playlist_id = playlist['id']
+
+# Add the songs to the Spotify playlist
+for song in songs:
+    song_title, artist = song
+    
+    # Search for the song on Spotify
+    results = spotify.search(q=f'track:{song_title} artist:{artist}', type='track')
+    
+    # Get the first result
+    if len(results['tracks']['items']) > 0:
+        track = results['tracks']['items'][0]
+        track_id = track['id']
+        
+        # Add the song to the playlist
+        spotify.
